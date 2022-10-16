@@ -46,17 +46,14 @@ class SomeTest {
     }
 
     private fun arabicToRoman(givenArabicNumber: Int): String {
-        if (isSimpleRomanNumber(givenArabicNumber)) return arabicToRomanMap.getValue(givenArabicNumber)
+        if (isSimpleRomanNumber(givenArabicNumber)) return getRoman(givenArabicNumber)
 
-        val arabicNumberKeys = arabicToRomanMap.keys
-        arabicNumberKeys
-            .filter { arabicNumberWhichHasRomanEquivalent ->
-                isSimpleRomanNumber(givenArabicNumber + arabicNumberWhichHasRomanEquivalent)
-            }
-            .firstOrNull()
+        arabicNumbersWithRomanRepresentation().firstOrNull { arabicNumberWithRomanRepresentation ->
+            isSimpleRomanNumber(givenArabicNumber + arabicNumberWithRomanRepresentation)
+        }
             ?.let { numberAddedToGivenNumberEqualsRomanEquivalent ->
-                return arabicToRomanMap.getValue(numberAddedToGivenNumberEqualsRomanEquivalent) +
-                        arabicToRomanMap.getValue(givenArabicNumber + numberAddedToGivenNumberEqualsRomanEquivalent)
+                return getRoman(numberAddedToGivenNumberEqualsRomanEquivalent) +
+                        getRoman(givenArabicNumber + numberAddedToGivenNumberEqualsRomanEquivalent)
             }
 
         return numberSmallerThanOneOfNearestSign(givenArabicNumber)
@@ -65,12 +62,16 @@ class SomeTest {
     private fun isSimpleRomanNumber(givenArabicNumber: Int) = arabicToRomanMap.containsKey(givenArabicNumber)
 
     private fun numberSmallerThanOneOfNearestSign(givenArabicNumber: Int): String {
-        val arabicNumbersWithExistingRomanSign = arabicToRomanMap.keys.toList().reversed()
+        val arabicNumbersWithExistingRomanSign = arabicNumbersWithRomanRepresentation().toList().reversed()
         val firstSmallerArabicNumber = arabicNumbersWithExistingRomanSign
             .find { arabicNumberWithRomanSign -> arabicNumberWithRomanSign < givenArabicNumber }
 
-        return arabicToRomanMap.getValue(firstSmallerArabicNumber!!) + arabicToRoman(givenArabicNumber - firstSmallerArabicNumber)
+        return getRoman(firstSmallerArabicNumber!!) + arabicToRoman(givenArabicNumber - firstSmallerArabicNumber)
     }
+
+    private fun arabicNumbersWithRomanRepresentation() = arabicToRomanMap.keys
+
+    private fun getRoman(givenArabicNumber: Int) = arabicToRomanMap.getValue(givenArabicNumber)
 
     private val arabicToRomanMap = mapOf(
         1 to "I",
