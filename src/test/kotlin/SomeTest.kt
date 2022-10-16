@@ -45,6 +45,13 @@ class SomeTest {
         assertEquals("IX", arabicToRoman(9))
     }
 
+    @Test
+    fun `given hard acceptance test`() {
+        assertEquals("MMVIII", arabicToRoman(2008))
+        assertEquals("DCCCXLVI", arabicToRoman(846))
+//        assertEquals("MCMXCIX", arabicToRoman(1999))
+    }
+
     private fun arabicToRoman(givenArabicNumber: Int): String {
         if (isSimpleRomanNumber(givenArabicNumber)) return getRoman(givenArabicNumber)
 
@@ -79,5 +86,7 @@ class SomeTest {
         10 to "X",
         50 to "L",
         100 to "C",
+        500 to "D",
+        1000 to "M",
     )
 }
