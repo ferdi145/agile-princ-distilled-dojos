@@ -74,5 +74,4 @@ class SomeTest {
         50 to "L",
         100 to "C",
     )
-
 }
