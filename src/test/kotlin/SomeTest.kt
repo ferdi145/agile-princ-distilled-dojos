@@ -37,7 +37,6 @@ class SomeTest {
     fun `numbers with repeating roman signs`() {
         assertEquals("XX", arabicToRoman(20))
         assertEquals("XXX", arabicToRoman(30))
-        assertEquals("XXXX", arabicToRoman(40))
     }
 
     @Test
@@ -49,10 +48,16 @@ class SomeTest {
     private fun arabicToRoman(givenArabicNumber: Int): String {
         if (isSimpleRomanNumber(givenArabicNumber)) return arabicToRomanMap.getValue(givenArabicNumber)
 
-        // TODO make this generic for the failing test to work
-        if (isSimpleRomanNumber(givenArabicNumber + 1)) {
-            return "I" + arabicToRomanMap.getValue(givenArabicNumber + 1)
-        }
+        val arabicNumberKeys = arabicToRomanMap.keys
+        arabicNumberKeys
+            .filter { arabicNumberWhichHasRomanEquivalent ->
+                isSimpleRomanNumber(givenArabicNumber + arabicNumberWhichHasRomanEquivalent)
+            }
+            .firstOrNull()
+            ?.let { numberAddedToGivenNumberEqualsRomanEquivalent ->
+                return arabicToRomanMap.getValue(numberAddedToGivenNumberEqualsRomanEquivalent) +
+                        arabicToRomanMap.getValue(givenArabicNumber + numberAddedToGivenNumberEqualsRomanEquivalent)
+            }
 
         return numberSmallerThanOneOfNearestSign(givenArabicNumber)
     }
