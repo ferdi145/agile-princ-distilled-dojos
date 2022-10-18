@@ -46,6 +46,12 @@ class SomeTest {
     }
 
     @Test
+    fun `bla`() {
+        assertEquals("XLVI", arabicToRoman(46))
+    }
+
+
+    @Test
     fun `given hard acceptance test`() {
         assertEquals("MMVIII", arabicToRoman(2008))
         assertEquals("DCCCXLVI", arabicToRoman(846))
@@ -61,6 +67,16 @@ class SomeTest {
             ?.let { numberAddedToGivenNumberEqualsRomanEquivalent ->
                 return getRoman(numberAddedToGivenNumberEqualsRomanEquivalent) +
                         getRoman(givenArabicNumber + numberAddedToGivenNumberEqualsRomanEquivalent)
+            }
+
+//        arabicNumbersWithRomanRepresentation().firstOrNull { arabicNumberWithRomanRepresentation ->
+//            val nextNumber =
+//                arabicToRomanMap.keys.toList().elementAt(arabicToRomanMap.keys.indexOf(arabicNumberWithRomanRepresentation) + 1)
+//            nextNumber < givenArabicNumber
+//        }
+        arabicNumbersWithRomanRepresentation().firstOrNull { givenArabicNumber in 41..49 }
+            ?.let { numberAddedToGivenNumberEqualsRomanEquivalent ->
+                return "X" + arabicToRoman(givenArabicNumber + 10)
             }
 
         return numberSmallerThanOneOfNearestSign(givenArabicNumber)
