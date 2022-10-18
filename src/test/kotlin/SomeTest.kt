@@ -49,59 +49,36 @@ class SomeTest {
     fun `given hard acceptance test`() {
         assertEquals("DCCCXLVI", arabicToRoman(846))
         assertEquals("MMVIII", arabicToRoman(2008))
-//        assertEquals("MCMXCIX", arabicToRoman(1999))
+        assertEquals("MCMXCIX", arabicToRoman(1999))
     }
 
     private fun arabicToRoman(givenArabicNumber: Int): String {
-        if (isSimpleRomanNumber(givenArabicNumber)) return getRoman(givenArabicNumber)
-
-        arabicNumbersWithRomanRepresentation().firstOrNull { arabicNumberWithRomanRepresentation ->
-            isSimpleRomanNumber(givenArabicNumber + arabicNumberWithRomanRepresentation)
-        }
-            ?.let { numberAddedToGivenNumberEqualsRomanEquivalent ->
-                return getRoman(numberAddedToGivenNumberEqualsRomanEquivalent) +
-                        getRoman(givenArabicNumber + numberAddedToGivenNumberEqualsRomanEquivalent)
+        val reversedKeys = arabicToRomanMap.keys.reversed()
+        var currentArabicNumber = givenArabicNumber
+        var roman = ""
+        for (arabicKey in reversedKeys) {
+            while (currentArabicNumber >= arabicKey) {
+                currentArabicNumber -= arabicKey
+                roman += arabicToRomanMap.getValue(arabicKey)
             }
-
-        val closestLowerNumber = getClosestLowerNumber(givenArabicNumber)
-        arabicNumbersWithRomanRepresentation()
-            .firstOrNull { givenArabicNumber % closestLowerNumber in 1..9 }
-            ?.let {
-                return arabicToRoman(closestLowerNumber) + arabicToRoman(givenArabicNumber - closestLowerNumber)
-            }
-
-        return numberSmallerThanOneOfNearestSign(givenArabicNumber)
-    }
-
-    private fun getClosestLowerNumber(givenArabicNumber: Int): Int {
-        var currentNumber = givenArabicNumber
-        while (currentNumber % 10 != 0 && currentNumber > 9) {
-            currentNumber--
         }
-        return currentNumber
+
+        return roman
     }
-
-    private fun isSimpleRomanNumber(givenArabicNumber: Int) = arabicToRomanMap.containsKey(givenArabicNumber)
-
-    private fun numberSmallerThanOneOfNearestSign(givenArabicNumber: Int): String {
-        val arabicNumbersWithExistingRomanSign = arabicNumbersWithRomanRepresentation().toList().reversed()
-        val firstSmallerArabicNumber = arabicNumbersWithExistingRomanSign
-            .find { arabicNumberWithRomanSign -> arabicNumberWithRomanSign < givenArabicNumber }
-
-        return getRoman(firstSmallerArabicNumber!!) + arabicToRoman(givenArabicNumber - firstSmallerArabicNumber)
-    }
-
-    private fun arabicNumbersWithRomanRepresentation() = arabicToRomanMap.keys
-
-    private fun getRoman(givenArabicNumber: Int) = arabicToRomanMap.getValue(givenArabicNumber)
 
     private val arabicToRomanMap = mapOf(
         1 to "I",
+        4 to "IV",
         5 to "V",
+        9 to "IX",
         10 to "X",
+        40 to "XL",
         50 to "L",
+        90 to "XC",
         100 to "C",
+        400 to "CD",
         500 to "D",
+        900 to "CM",
         1000 to "M",
     )
 }
