@@ -46,23 +46,6 @@ class SomeTest {
     }
 
     @Test
-    fun `bla`() {
-        assertEquals("XLVI", arabicToRoman(46))
-    }
-
-    //TODO prob. not needed
-    @Test
-    fun `get smaller numbers test`() {
-        assertEquals(
-            mapOf(1 to "I", 5 to "V", 10 to "X"), getSmallerRomanNumbers(10)
-        )
-        assertEquals(
-            mapOf(1 to "I", 5 to "V", 10 to "X", 50 to "L"), getSmallerRomanNumbers(66)
-        )
-    }
-
-
-    @Test
     fun `given hard acceptance test`() {
         assertEquals("DCCCXLVI", arabicToRoman(846))
         assertEquals("MMVIII", arabicToRoman(2008))
@@ -97,12 +80,6 @@ class SomeTest {
         }
         return currentNumber
     }
-
-    fun getSmallerRomanNumbers(givenArabicNumber: Int) = arabicToRomanMap.keys
-        .first { it > givenArabicNumber }
-        .let { firstBiggerNumber -> arabicToRomanMap.entries.filter { entry -> entry.key < firstBiggerNumber } }
-        .map { it.key to it.value }
-        .toMap()
 
     private fun isSimpleRomanNumber(givenArabicNumber: Int) = arabicToRomanMap.containsKey(givenArabicNumber)
 
